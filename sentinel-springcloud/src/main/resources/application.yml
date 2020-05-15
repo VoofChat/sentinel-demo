@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: sentinel-springcloud-demo
+  cloud:
+    sentinel:
+      transport:
+        dashboard: http://localhost:8080
+
+server:
+  port: 8081

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，
+ 你会看到log4j2内部各种详细输出。可以设置成OFF(关闭)或Error(只输出错误信息)
+-->
+<Configuration status="OFF">
+    <Properties>
+        <property name="log_pattern">%d %p [%c:%L][%t] - %m%n</property>
+        <property name="file_error">../logs/sentinel-springcloud-error.log</property>
+        <property name="file_info">../logs/sentinel-springcloud-info.log</property>
+        <property name="rolling_file_name">logs/sentinel-springcloud-%d{yyyy-MM-dd}-%i.log.gz</property>
+        <property name="output_log_level">debug</property><!-- 日志输出级别 -->
+    </Properties>
+
+    <Appenders>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY">
+            </ThresholdFilter>
+            <PatternLayout pattern="${log_pattern}">
+            </PatternLayout>
+        </Console>
+
+        <File name="log_error" fileName="${file_error}" append="false" >
+            <PatternLayout pattern="${log_pattern}">
+            </PatternLayout>
+
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY">
+            </ThresholdFilter>
+        </File>
+
+        <File name="log_info" fileName="${file_info}" append="false" >
+            <PatternLayout pattern="${log_pattern}">
+            </PatternLayout>
+
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY">
+            </ThresholdFilter>
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="trace" includeLocation="true">
+            <AppenderRef ref="console"></AppenderRef>
+            <AppenderRef ref="log_info"></AppenderRef>
+            <AppenderRef ref="log_error"></AppenderRef>
+        </Root>
+
+    </Loggers>
+</Configuration>
